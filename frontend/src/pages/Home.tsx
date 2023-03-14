@@ -81,7 +81,7 @@ const Home = () => {
   const [clearedCards, setClearedCards] = useState<Array<number>>([]);
   const [shouldDisableAllCards, setShouldDisableAllCards] =
     useState<boolean>(false);
-  const timeout = useRef<NodeJS.Timeout>(setTimeout(() => {}));
+  const timeout = useRef(setTimeout(() => {}));
 
   const disable = () => {
     setShouldDisableAllCards(true);
@@ -131,7 +131,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    let timeout: NodeJS.Timeout = setTimeout(() => {});
+    let timeout = setTimeout(() => {});
     if (openCards.length === 2) {
       timeout = setTimeout(evaluate, 300);
     }
