@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import Card from "../components/Card";
-import rick from "../../public/assets/rick.jpeg";
+import rick from "../assets/rick.jpeg";
+import morty from "../assets/morty.jpeg";
+import summer from "../assets/summer.jpeg";
+import beth from "../assets/beth.jpeg";
+import jerry from "../assets/jerry.jpeg";
+import evilMorty from "../assets/evilMorty.jpeg";
 
 type Card = {
   card: any;
@@ -11,62 +16,62 @@ const Home = () => {
   const [cards, setCards] = useState<any>(
     [
       {
-        img: "../../public/assets/rick.jpeg",
+        img: rick,
         id: 1,
         status: "",
       },
       {
-        img: "../../public/assets/morty.jpeg",
+        img: morty,
         id: 2,
         status: "",
       },
       {
-        img: "../../public/assets/summer.jpeg",
+        img: summer,
         id: 3,
         status: "",
       },
       {
-        img: "../../public/assets/beth.jpeg",
+        img: beth,
         id: 4,
         status: "",
       },
       {
-        img: "../../public/assets/jerry.jpeg",
+        img: jerry,
         id: 5,
         status: "",
       },
       {
-        img: "../../public/assets/evilMorty.jpeg",
+        img: evilMorty,
         id: 6,
         status: "",
       },
       {
-        img: "../../public/assets/rick.jpeg",
+        img: rick,
         id: 1,
         status: "",
       },
       {
-        img: "../../public/assets/morty.jpeg",
+        img: morty,
         id: 2,
         status: "",
       },
       {
-        img: "../../public/assets/summer.jpeg",
+        img: summer,
         id: 3,
         status: "",
       },
       {
-        img: "../../public/assets/beth.jpeg",
+        img: beth,
         id: 4,
         status: "",
       },
       {
-        img: "../../public/assets/jerry.jpeg",
+        img: jerry,
         id: 5,
         status: "",
       },
       {
-        img: "../../public/assets/evilMorty.jpeg",
+        img: evilMorty,
         id: 6,
         status: "",
       },
@@ -147,8 +152,7 @@ const Home = () => {
     return clearedCards.includes(id);
   };
   return (
-    <section className="grid grid-cols-4 gap-4  rounded-md ">
-      <img src={rick} alt="" />
+    <section className="grid grid-cols-4 gap-4  rounded-md bg-white p-4 ">
       {cards.map((card: any, i: number) => (
         <Card
           key={i}

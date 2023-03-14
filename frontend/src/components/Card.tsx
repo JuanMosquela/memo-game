@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import back from "../../public/assets/back.jpg";
+import back from "../assets/back.jpg";
 
 type CardProps = {
   image: string;
@@ -40,4 +40,5 @@ const Card = (props: CardProps) => {
     </figure>
   );
 };
+
 export default Card;
