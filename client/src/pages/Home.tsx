@@ -1,112 +1,164 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
-import {
-  rick,
-  morty,
-  summer,
-  jerry,
-  beth,
-  evilMorty,
-} from "../../public/assets/index";
+import { useEffect, useRef, useState } from "react";
 import Card from "../components/Card";
+import rick from "../../public/assets/rick.jpeg";
 
-// const characters = [
-//   "../../public/assets/rick.jpeg",
-//   "../../public/assets/morty.jpeg",
-//   "../../public/assets/summer.jpeg",
-//   "../../public/assets/beth.jpeg",
-//   "../../public/assets/jerry.jpeg",
-//   "../../public/assets/evilMorty.jpeg",
-// ];
-
-let characters = [
-  {
-    img: "../../public/assets/rick.jpeg",
-    id: 1,
-  },
-  {
-    img: "../../public/assets/morty.jpeg",
-    id: 2,
-  },
-  {
-    img: "../../public/assets/summer.jpeg",
-    id: 3,
-  },
-  {
-    img: "../../public/assets/beth.jpeg",
-    id: 4,
-  },
-  {
-    img: "../../public/assets/jerry.jpeg",
-    id: 5,
-  },
-  {
-    img: "../../public/assets/evilMorty.jpeg",
-    id: 6,
-  },
-  {
-    img: "../../public/assets/rick.jpeg",
-    id: 1,
-  },
-  {
-    img: "../../public/assets/morty.jpeg",
-    id: 2,
-  },
-  {
-    img: "../../public/assets/summer.jpeg",
-    id: 3,
-  },
-  {
-    img: "../../public/assets/beth.jpeg",
-    id: 4,
-  },
-  {
-    img: "../../public/assets/jerry.jpeg",
-    id: 5,
-  },
-  {
-    img: "../../public/assets/evilMorty.jpeg",
-    id: 6,
-  },
-].sort(() => (Math.random() > 0.5 ? 1 : -1));
+type Card = {
+  card: any;
+  index: number;
+};
 
 const Home = () => {
-  const [cards, setCards] = useState(characters);
-  const [openCards, setOpenCards] = useState<number[]>([]);
+  const [cards, setCards] = useState<any>(
+    [
+      {
+        img: "../../public/assets/rick.jpeg",
+        id: 1,
+        status: "",
+      },
+      {
+        img: "../../public/assets/morty.jpeg",
+        id: 2,
+        status: "",
+      },
+      {
+        img: "../../public/assets/summer.jpeg",
+        id: 3,
+        status: "",
+      },
+      {
+        img: "../../public/assets/beth.jpeg",
+        id: 4,
+        status: "",
+      },
+      {
+        img: "../../public/assets/jerry.jpeg",
+        id: 5,
+        status: "",
+      },
+      {
+        img: "../../public/assets/evilMorty.jpeg",
+        id: 6,
+        status: "",
+      },
+      {
+        img: "../../public/assets/rick.jpeg",
+        id: 1,
+        status: "",
+      },
+      {
+        img: "../../public/assets/morty.jpeg",
+        id: 2,
+        status: "",
+      },
+      {
+        img: "../../public/assets/summer.jpeg",
+        id: 3,
+        status: "",
+      },
+      {
+        img: "../../public/assets/beth.jpeg",
+        id: 4,
+        status: "",
+      },
+      {
+        img: "../../public/assets/jerry.jpeg",
+        id: 5,
+        status: "",
+      },
+      {
+        img: "../../public/assets/evilMorty.jpeg",
+        id: 6,
+        status: "",
+      },
+    ].sort(() => (Math.random() > 0.5 ? 1 : -1))
+  );
+  const [openCards, setOpenCards] = useState<Array<number>>([]);
+  const [clearedCards, setClearedCards] = useState<Array<number>>([]);
+  const [shouldDisableAllCards, setShouldDisableAllCards] =
+    useState<boolean>(false);
+  const timeout = useRef<NodeJS.Timeout>(setTimeout(() => {}));
 
-  const checkMatch = () => {
-    const [cardOne, cardTwo] = openCards;
-    console.log(cardOne, cardTwo);
+  const disable = () => {
+    setShouldDisableAllCards(true);
+  };
+  const enable = () => {
+    setShouldDisableAllCards(false);
+  };
 
-    if (cardOne == cardTwo) {
-      console.log("son iguales");
-    } else {
-      console.log("no son iguales");
-      setOpenCards([]);
+  const finishGame = () => {
+    console.log(clearedCards.length);
+    console.log(cards.length);
+    if (clearedCards.length === cards.length) {
+      console.log("juego terminado");
     }
   };
 
-  const handleClick = (i: any) => {
-    console.log(i);
-    if (openCards.length == 1) {
-      console.log("ya hay dos cartas");
-      setOpenCards([...openCards, i]);
+  const evaluate = () => {
+    const [first, second] = openCards;
+    console.log(first, second);
+    enable();
+    // check if first card is equal second card
+    if (cards[first].id === cards[second].id) {
+      console.log("coinciden");
+      setClearedCards((prev) => [...prev, first, second]);
+      setOpenCards([]);
       return;
     }
-    setOpenCards([i]);
+    console.log("no coinciden");
+    // flip the cards back after 500ms duration
+    timeout.current = setTimeout(() => {
+      setOpenCards([]);
+    }, 500);
+  };
+
+  const handleCardClick = (id: number) => {
+    if (openCards.length === 1) {
+      // in this case we have alredy selected one card
+      // this means that we are finishing a move
+      setOpenCards((prev) => [...prev, id]);
+
+      disable();
+    } else {
+      // in this case this is the first card we select
+      clearTimeout(timeout.current);
+      setOpenCards([id]);
+    }
   };
 
   useEffect(() => {
+    let timeout: NodeJS.Timeout = setTimeout(() => {});
     if (openCards.length === 2) {
-      setTimeout(checkMatch, 500);
+      timeout = setTimeout(evaluate, 300);
     }
+    return () => {
+      clearTimeout(timeout);
+    };
   }, [openCards]);
 
-  console.log(openCards);
+  useEffect(() => {
+    finishGame();
+  }, [clearedCards]);
 
+  const checkIsFlipped = (id: number) => {
+    return clearedCards.includes(id) || openCards.includes(id);
+  };
+
+  const checkIsInactive = (id: number) => {
+    return clearedCards.includes(id);
+  };
   return (
-    <section className=" grid grid-cols-4 gap-4 ">
-      {cards?.map((character, i) => (
-        <Card key={i} img={character.img} id={i} handleClick={handleClick} />
+    <section className="grid grid-cols-4 gap-4  rounded-md ">
+      <img src={rick} alt="" />
+      {cards.map((card: any, i: number) => (
+        <Card
+          key={i}
+          image={card.img}
+          id={i}
+          isDisabled={shouldDisableAllCards}
+          isInactive={checkIsInactive(i)}
+          isFlipped={checkIsFlipped(i)}
+          onClick={handleCardClick}
+        />
       ))}
     </section>
   );
