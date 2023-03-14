@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Board from "./components/Board";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./pages/Login";
+import Ranking from "./pages/Ranking";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <BrowserRouter>
@@ -12,6 +13,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       <Route path="/" element={<App />}>
         <Route element={<ProtectedRoute />}>
           <Route index element={<Board />} />
+          <Route path="/ranking" element={<Ranking />} />
         </Route>
         <Route path="/login" element={<Login />} />
       </Route>

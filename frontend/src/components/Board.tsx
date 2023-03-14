@@ -6,6 +6,7 @@ import summer from "../assets/summer.jpeg";
 import beth from "../assets/beth.jpeg";
 import jerry from "../assets/jerry.jpeg";
 import evilMorty from "../assets/evilMorty.jpeg";
+import SuccessModal from "./SuccessModal";
 
 type Card = {
   card: any;
@@ -81,6 +82,7 @@ const Board = () => {
   const [clearedCards, setClearedCards] = useState<Array<number>>([]);
   const [shouldDisableAllCards, setShouldDisableAllCards] =
     useState<boolean>(false);
+  const [gameFinished, setGameFinished] = useState(false);
   const timeout = useRef(setTimeout(() => {}));
 
   const disable = () => {
@@ -94,6 +96,7 @@ const Board = () => {
     console.log(clearedCards.length);
     console.log(cards.length);
     if (clearedCards.length === cards.length) {
+      setGameFinished(true);
       console.log("juego terminado");
     }
   };
@@ -152,19 +155,22 @@ const Board = () => {
     return clearedCards.includes(id);
   };
   return (
-    <section className="grid grid-cols-4 gap-4  rounded-md bg-white p-4 ">
-      {cards.map((card: any, i: number) => (
-        <Card
-          key={i}
-          image={card.img}
-          id={i}
-          isDisabled={shouldDisableAllCards}
-          isInactive={checkIsInactive(i)}
-          isFlipped={checkIsFlipped(i)}
-          onClick={handleCardClick}
-        />
-      ))}
-    </section>
+    <>
+      <section className="grid grid-cols-4 gap-4  rounded-md bg-white p-4 ">
+        {cards.map((card: any, i: number) => (
+          <Card
+            key={i}
+            image={card.img}
+            id={i}
+            isDisabled={shouldDisableAllCards}
+            isInactive={checkIsInactive(i)}
+            isFlipped={checkIsFlipped(i)}
+            onClick={handleCardClick}
+          />
+        ))}
+      </section>
+      <SuccessModal gameFinished={gameFinished} />
+    </>
   );
 };
 export default Board;
