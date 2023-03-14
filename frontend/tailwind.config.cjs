@@ -5,7 +5,4 @@ module.exports = {
     extend: {},
   },
   plugins: [],
-  backgroundImage: {
-    hero: "url('./src/assets/background.jpg')",
-  },
 };
