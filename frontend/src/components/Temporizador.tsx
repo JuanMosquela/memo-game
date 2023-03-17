@@ -44,7 +44,7 @@ const Temporizador = ({}) => {
         {timerClock}
       </span>
 
-      <ModalComponent />
+      {/* <ModalComponent /> */}
     </>
   );
 };

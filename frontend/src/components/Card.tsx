@@ -18,7 +18,7 @@ const Card = (props: CardProps) => {
   return (
     <figure
       onClick={handleClick}
-      className=" relative h-[160px] w-[160px] group [perspective:500px]  "
+      className=" relative md:h-[140px] sm:h-[120px]  h-[80px] md:w-[140px] sm:w-[120px] w-[80px] group [perspective:500px]  "
     >
       <div
         className={` ${

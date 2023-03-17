@@ -200,9 +200,9 @@ const Board = ({ playMode }: BoardProps) => {
 
   return (
     <>
-      <div className="min-h-screen  flex flex-col justify-center items-center">
-        <div className="bg-white p-4">
-          <section className="grid grid-cols-4 gap-4  rounded-md mb-2  ">
+      <div className="min-h-screen flex  justify-center items-center  ">
+        <div className="bg-white md:p-4 p-2   ">
+          <section className="grid grid-cols-4 gap-4  rounded-md mb-4  ">
             {cards.map((card: any, i: number) => (
               <Card
                 key={i}
@@ -220,7 +220,7 @@ const Board = ({ playMode }: BoardProps) => {
             <Temporizador />
           </div>
         </div>
-        <ModalComponent />
+        {/* <ModalComponent /> */}
       </div>
     </>
   );
