@@ -10,6 +10,8 @@ import {
   TextField,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { selectGame, setGameFinished } from "../redux/slices/gameSlice";
 //   import { useNavigate, useParams } from "react-router-dom";
 //   import { toast } from "react-toastify";
 //   import { selectAuth } from "../redux/slices/authSlice";
@@ -17,13 +19,16 @@ import { useEffect, useState } from "react";
 //   import { useCreateTodoMutation } from "../redux/api/todosApi";
 //   import { FiEdit } from "react-icons/fi";
 
-const SuccessModal = ({ gameFinished }: any) => {
-  console.log(gameFinished);
+const ModalComponent = () => {
   // const auth = useSelector(selectAuth);
 
-  const [open, setOpen] = useState(gameFinished);
-
   const [title, setTitle] = useState("");
+
+  const { finished, status } = useSelector(selectGame);
+
+  console.log(status);
+
+  const dispatch = useDispatch();
 
   // const navigate = useNavigate();
 
@@ -39,18 +44,18 @@ const SuccessModal = ({ gameFinished }: any) => {
     p: 4,
   };
 
-  const handleOpen = () => {
-    //   if (!auth?.token) {
-    //     toast.error("Debes estar autenticado");
-    //     navigate("/login");
-    //     return;
-    //   }
-    setOpen(true);
-  };
+  //   const handleOpen = () => {
+  //     //   if (!auth?.token) {
+  //     //     toast.error("Debes estar autenticado");
+  //     //     navigate("/login");
+  //     //     return;
+  //     //   }
+  //     setOpen(true);
+  //   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  //   const handleClose = () => {
+  //     setOpen(false);
+  //   };
 
   // const handleSubmit = (e: any) => {
   //   e.preventDefault();
@@ -82,7 +87,10 @@ const SuccessModal = ({ gameFinished }: any) => {
 
   return (
     <>
-      <Modal open={gameFinished} onClose={handleClose}>
+      <Modal
+        open={finished}
+        // onClose={() => dispatchEvent}
+      >
         <Box
           sx={{
             position: "absolute",
@@ -98,23 +106,27 @@ const SuccessModal = ({ gameFinished }: any) => {
         >
           <form className="block w-full">
             <h3 className=" text-blue text-2xl font-semibold mb-4">
-              Congratulations, You won the memogame
+              {status == "timeout"
+                ? "Sorry, your time run out"
+                : "Congratulations, You won the memogame"}
             </h3>
-            <p className="text-sm  font-semibold text-slate-400">
+            <p className="text-sm  font-semibold text-slate-400 mb-6">
               The game wants to save your progress, do you want to continue ?
             </p>
-            <textarea
-              className="bg-gray p-2 text-sm w-full outline-none mt-2 resize-none rounded-md   "
-              name="textarea"
-              rows={7}
-              onChange={(e) => setTitle(e.target.value)}
-            ></textarea>
-            <div className="flex items-center justify-end">
+
+            <div className="flex  w-full items-center ">
+              <button
+                onClick={() => dispatch(setGameFinished(false))}
+                type="button"
+                className="flex-1 bg-slate-400 hover:bg-slate-400/90 text-white font-medium  text-sm md:w-[100px] w-full h-[40px] drop-shadow-lg semibold uppercase"
+              >
+                cancel
+              </button>
               <button
                 type="submit"
-                className=" bg-blue hover:bg-blue/90 text-white font-medium  text-md md:w-[100px] w-full h-[40px] drop-shadow-lg "
+                className="flex-1 bg-green-400 hover:bg-green-400/90 text-white font-medium  text-sm md:w-[100px] w-full h-[40px] drop-shadow-lg semibold uppercase"
               >
-                ok
+                save
               </button>
             </div>
           </form>
@@ -123,4 +135,4 @@ const SuccessModal = ({ gameFinished }: any) => {
     </>
   );
 };
-export default SuccessModal;
+export default ModalComponent;

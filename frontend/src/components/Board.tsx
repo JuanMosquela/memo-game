@@ -6,14 +6,30 @@ import summer from "../assets/summer.jpeg";
 import beth from "../assets/beth.jpeg";
 import jerry from "../assets/jerry.jpeg";
 import evilMorty from "../assets/evilMorty.jpeg";
-import SuccessModal from "./SuccessModal";
+import adolf from "../assets/lincon.jpeg";
+import doofus from "../assets/doofus.jpeg";
+import Temporizador from "./Temporizador";
+import Points from "./Points";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectGame,
+  setGameFinished,
+  setGameStatus,
+  setGameTotalMoves,
+  updatePoints,
+} from "../redux/slices/gameSlice";
+import ModalComponent from "./ModalComponent";
 
 type Card = {
   card: any;
   index: number;
 };
 
-const Board = () => {
+type BoardProps = {
+  playMode: string;
+};
+
+const Board = ({ playMode }: BoardProps) => {
   const [cards, setCards] = useState<any>(
     [
       {
@@ -47,6 +63,17 @@ const Board = () => {
         status: "",
       },
       {
+        img: doofus,
+        id: 7,
+        status: "",
+      },
+      {
+        img: adolf,
+        id: 8,
+        status: "",
+      },
+
+      {
         img: rick,
         id: 1,
         status: "",
@@ -76,14 +103,29 @@ const Board = () => {
         id: 6,
         status: "",
       },
+      {
+        img: doofus,
+        id: 7,
+        status: "",
+      },
+      {
+        img: adolf,
+        id: 8,
+        status: "",
+      },
     ].sort(() => (Math.random() > 0.5 ? 1 : -1))
   );
   const [openCards, setOpenCards] = useState<Array<number>>([]);
+  // const [points, setPoints] = useState(0);
   const [clearedCards, setClearedCards] = useState<Array<number>>([]);
   const [shouldDisableAllCards, setShouldDisableAllCards] =
     useState<boolean>(false);
-  const [gameFinished, setGameFinished] = useState(false);
+
   const timeout = useRef(setTimeout(() => {}));
+
+  const dispatch = useDispatch();
+
+  const { points, moves } = useSelector(selectGame);
 
   const disable = () => {
     setShouldDisableAllCards(true);
@@ -93,27 +135,31 @@ const Board = () => {
   };
 
   const finishGame = () => {
-    console.log(clearedCards.length);
-    console.log(cards.length);
     if (clearedCards.length === cards.length) {
-      setGameFinished(true);
-      console.log("juego terminado");
+      dispatch(setGameFinished(true));
+      dispatch(setGameStatus("completed"));
+      console.log(
+        `juego terminado con ${points} y necesitaste ${moves} cantidad de movidas`
+      );
     }
   };
 
   const evaluate = () => {
     const [first, second] = openCards;
-    console.log(first, second);
+
+    dispatch(setGameTotalMoves(1));
+
     enable();
-    // check if first card is equal second card
+
     if (cards[first].id === cards[second].id) {
-      console.log("coinciden");
+      // setPoints((prev) => prev + 1);
+      dispatch(updatePoints(2));
+
       setClearedCards((prev) => [...prev, first, second]);
       setOpenCards([]);
       return;
     }
-    console.log("no coinciden");
-    // flip the cards back after 500ms duration
+
     timeout.current = setTimeout(() => {
       setOpenCards([]);
     }, 500);
@@ -121,13 +167,10 @@ const Board = () => {
 
   const handleCardClick = (id: number) => {
     if (openCards.length === 1) {
-      // in this case we have alredy selected one card
-      // this means that we are finishing a move
       setOpenCards((prev) => [...prev, id]);
 
       disable();
     } else {
-      // in this case this is the first card we select
       clearTimeout(timeout.current);
       setOpenCards([id]);
     }
@@ -154,22 +197,31 @@ const Board = () => {
   const checkIsInactive = (id: number) => {
     return clearedCards.includes(id);
   };
+
   return (
     <>
-      <section className="grid grid-cols-4 gap-4  rounded-md bg-white p-4 ">
-        {cards.map((card: any, i: number) => (
-          <Card
-            key={i}
-            image={card.img}
-            id={i}
-            isDisabled={shouldDisableAllCards}
-            isInactive={checkIsInactive(i)}
-            isFlipped={checkIsFlipped(i)}
-            onClick={handleCardClick}
-          />
-        ))}
-      </section>
-      <SuccessModal gameFinished={gameFinished} />
+      <div className="min-h-screen  flex flex-col justify-center items-center">
+        <div className="bg-white p-4">
+          <section className="grid grid-cols-4 gap-4  rounded-md mb-2  ">
+            {cards.map((card: any, i: number) => (
+              <Card
+                key={i}
+                image={card.img}
+                id={i}
+                isDisabled={shouldDisableAllCards}
+                isInactive={checkIsInactive(i)}
+                isFlipped={checkIsFlipped(i)}
+                onClick={handleCardClick}
+              />
+            ))}
+          </section>
+          <div className=" flex w-full  justify-end gap-4">
+            <Points />
+            <Temporizador />
+          </div>
+        </div>
+        <ModalComponent />
+      </div>
     </>
   );
 };

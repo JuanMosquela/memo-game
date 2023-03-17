@@ -6,17 +6,25 @@ import Board from "./components/Board";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./pages/Login";
 import Ranking from "./pages/Ranking";
+import Home from "./pages/Home";
+import Game from "./pages/Game";
+
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<App />}>
-        <Route element={<ProtectedRoute />}>
-          <Route index element={<Board />} />
-          <Route path="/ranking" element={<Ranking />} />
+    <Provider store={store}>
+      <Routes>
+        <Route path="/" element={<App />}>
+          <Route element={<ProtectedRoute />}>
+            <Route index element={<Home />} />
+            <Route path="/game" element={<Game />} />
+            <Route path="/ranking" element={<Ranking />} />
+          </Route>
+          <Route path="/login" element={<Login />} />
         </Route>
-        <Route path="/login" element={<Login />} />
-      </Route>
-    </Routes>
+      </Routes>
+    </Provider>
   </BrowserRouter>
 );
