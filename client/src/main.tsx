@@ -12,6 +12,7 @@ import Game from "./pages/Game";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import LeaderBoard from "./pages/LeaderBoard";
+import Register from "./pages/Register";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <BrowserRouter>
@@ -24,6 +25,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
             <Route path="/ranking" element={<LeaderBoard />} />
           </Route>
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Route>
       </Routes>
     </Provider>

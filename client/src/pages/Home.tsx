@@ -4,6 +4,7 @@ import Board from "../components/Board";
 import { resetGame, setGameDifficulty } from "../redux/slices/gameSlice";
 import { useEffect } from "react";
 import alert from "../assets/alert.png";
+import logo from "../assets/logo.svg";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -17,40 +18,41 @@ const Home = () => {
 
   return (
     <section className="min-h-screen flex justify-center items-center">
-      <div className=" relative bg-white  p-6 rounded-xl">
+      <div className=" relative bg-dark  p-6 rounded-xl w-[360px] ">
         <img
           src={alert}
           alt=""
-          className="absolute top-[-40px]  left-0 right-0 w-[200px] h-[200px] object-contain shadow-md rounded-full block m-auto  bg-white"
+          className="absolute top-[-40px]  left-0 right-0 w-[200px] h-[200px] object-contain shadow-md rounded-full block m-auto"
         />
-        <div className="space-y-4 mt-[180px]   ">
-          <h1 className="text-3xl font-bold uppercase">
-            Rick & Morty MemoGame
-          </h1>
-          <p className="text-slate-700  font-semibold text-md ">
-            Find all the pairs of cards to complete the game
-          </p>
-          <p className="text-slate-700  mb-4 font-semibold text-md ">
-            Select the difficulty and start playing
-          </p>
+        <div className=" space-y-2 mt-[160px]   ">
+          <div className="">
+            <img className="mb-6" src={logo} alt="" />
+            <p className="text-letter  font-semibold text-md mb-2 ">
+              Find all the pairs of cards to complete the game and save the
+              multiverse.
+            </p>
+            <p className="text-letter  mb-6 font-semibold text-md ">
+              Select the difficulty and start playing:
+            </p>
+          </div>
 
           <button
-            className="block w-full bg-green-400 py-3 rounded-md "
+            className="block w-full bg-green hover:bg-greenhover duration-200 py-3 rounded-md "
             onClick={() => handleClick("normal")}
           >
             <Link
-              className="  text-white font-semibold text-center text-md"
+              className="  text-letter font-semibold text-center text-md"
               to="game"
             >
               Normal
             </Link>
           </button>
           <button
-            className="block w-full bg-green-400 py-3 rounded-md "
+            className="block w-full bg-green hover:bg-greenhover duration-200 py-3 rounded-md "
             onClick={() => handleClick("hard")}
           >
             <Link
-              className=" text-white font-semibold text-center text-md"
+              className=" text-letter font-semibold text-center text-md"
               to="game"
             >
               Hard

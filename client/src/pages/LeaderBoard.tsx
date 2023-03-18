@@ -1,76 +1,44 @@
 import { CgProfile } from "react-icons/cg";
+import { Link } from "react-router-dom";
+import logo from "../assets/logo.svg";
 
 const LeaderBoard = () => {
   return (
-    <section className="min-h-screen flex justify-center items-center ">
-      <div className="w-[60%] p-5 h-screen bg-white ">
-        <h1 className="text-xl mb-2 ">Top Rated Players</h1>
+    <section className=" flex justify-center items-center min-h-screen  ">
+      <div className="w-[600px] p-5  bg-dark rounded-md ">
+        <img className="mb-6" src={logo} alt="" />
+
+        <h1 className="text-2xl mb-2 text-white font-bold ">
+          Top Rated Players
+        </h1>
 
         <div className="overflow-auto rounded-lg shadow hidden md:block">
           <table className="w-full">
             <thead className="bg-gray-50 border-b-2 border-gray-200">
               <tr>
-                <th className="p-3 text-sm font-semibold tracking-wide text-left">
-                  Details
+                <th className="p-3  md:text-md text-letter text-sm font-semibold tracking-wide text-left">
+                  Player
                 </th>
-                <th className="w-24 p-3 text-sm font-semibold tracking-wide text-left">
-                  Status
+
+                <th className="w-24 p-3  md:text-md text-letter text-sm font-semibold tracking-wide text-left">
+                  Moves
                 </th>
-                <th className="w-24 p-3 text-sm font-semibold tracking-wide text-left">
-                  Date
-                </th>
-                <th className="w-32 p-3 text-sm font-semibold tracking-wide text-left">
-                  Total
+                <th className="w-32 p-3  md:text-md text-letter text-sm font-semibold tracking-wide text-left">
+                  Points
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
-              <tr className="bg-white">
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  Kring New Fit office chair, mesh + PU, black
+            <tbody className="divide-y divide-green ">
+              <tr className="bg-letter">
+                <td className="p-3 text-sm text-dark font-semibold whitespace-nowrap">
+                  JuanmaMosquella
                 </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  <span className="p-1.5 text-xs font-medium uppercase tracking-wider text-green-800 bg-green-200 rounded-lg bg-opacity-50">
-                    Delivered
-                  </span>
+
+                <td className="p-3 text-sm font-semibold whitespace-nowrap">
+                  16
                 </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  16/10/2021
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  $200.00
-                </td>
-              </tr>
-              <tr className="bg-gray-50">
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  Kring New Fit office chair, mesh + PU, black
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  <span className="p-1.5 text-xs font-medium uppercase tracking-wider text-yellow-800 bg-yellow-200 rounded-lg bg-opacity-50">
-                    Shipped
-                  </span>
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  16/10/2021
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  $200.00
-                </td>
-              </tr>
-              <tr className="bg-white">
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  Kring New Fit office chair, mesh + PU, black
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  <span className="p-1.5 text-xs font-medium uppercase tracking-wider text-gray-800 bg-gray-200 rounded-lg bg-opacity-50">
-                    Cancelled
-                  </span>
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  16/10/2021
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  $200.00
+                <td className="p-3 text-sm font-semibold whitespace-nowrap">
+                  160
                 </td>
               </tr>
             </tbody>

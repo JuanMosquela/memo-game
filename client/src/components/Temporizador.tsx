@@ -38,7 +38,7 @@ const Temporizador = ({}) => {
 
   return (
     <>
-      <span className="bg-black text-white font-semibold rounded-md  w-[80px] h-[40px] text-center flex justify-center items-center gap-4 ">
+      <span className="bg-dark text-white font-semibold rounded-md  w-[80px] h-[40px] text-center flex justify-center items-center gap-4 ">
         <AiOutlineClockCircle className="text-white text-xl" />
         {timerClock}
       </span>
