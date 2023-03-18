@@ -1,6 +1,6 @@
 import { CgProfile } from "react-icons/cg";
 
-const Ranking = () => {
+const LeaderBoard = () => {
   return (
     <section className="min-h-screen flex justify-center items-center ">
       <div className="w-[60%] p-5 h-screen bg-white ">
@@ -140,4 +140,4 @@ const Ranking = () => {
     </section>
   );
 };
-export default Ranking;
+export default LeaderBoard;

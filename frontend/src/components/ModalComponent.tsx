@@ -12,6 +12,10 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectGame, setGameFinished } from "../redux/slices/gameSlice";
+import error from "../assets/error.png";
+import success from "../assets/success.png";
+import Points from "./Points";
+import { Link } from "react-router-dom";
 //   import { useNavigate, useParams } from "react-router-dom";
 //   import { toast } from "react-toastify";
 //   import { selectAuth } from "../redux/slices/authSlice";
@@ -24,9 +28,7 @@ const ModalComponent = () => {
 
   const [title, setTitle] = useState("");
 
-  const { finished, status } = useSelector(selectGame);
-
-  console.log(status);
+  const { finished, status, points, moves } = useSelector(selectGame);
 
   const dispatch = useDispatch();
 
@@ -96,35 +98,49 @@ const ModalComponent = () => {
             position: "absolute",
             top: "50%",
             left: "50%",
-            width: { md: "500px", sm: "70%", xs: "90%" },
+            width: "340px",
+
             transform: "translate(-50%, -50%)",
-            bgcolor: "#FFF",
+            bgcolor: "#fff",
             borderRadius: "10px",
             outline: "none",
-            p: 4,
           }}
         >
-          <form className="block w-full">
+          <img
+            className=" absolute top-[-40px] left-0 right-0 w-[200px] h-[200px] object-contain shadow-md rounded-full block m-auto  bg-white   "
+            src={status == "timeout" ? error : success}
+            alt=""
+          />
+          <form className="block w-full mt-[150px]  p-6">
             <h3 className=" text-blue text-2xl font-semibold mb-4">
               {status == "timeout"
                 ? "Sorry, your time run out"
-                : "Congratulations, You won the memogame"}
+                : "Wubba lubba dub dub"}
             </h3>
-            <p className="text-sm  font-semibold text-slate-400 mb-6">
-              The game wants to save your progress, do you want to continue ?
+            <p className="text-md  font-semibold text-slate-600 mb-6">
+              {status == "timeout"
+                ? "There's an infinite number of realities, Morty. And in a few dozen of those you got lucky and won the game."
+                : " Congratulations, you won the Rick & Morty Memo Game. Would you like to save your progress?"}
             </p>
 
-            <div className="flex  w-full items-center ">
+            <ul className="mb-4 ">
+              <li className=" bg-gray-200 rounded-md px-4 flex justify-between items-center w-full">
+                <p className="font-semibold ">Total Points:</p>
+                <Points bgColor={false} />
+              </li>
+            </ul>
+
+            <div className="flex  w-full items-center gap-2 ">
               <button
                 onClick={() => dispatch(setGameFinished(false))}
                 type="button"
-                className="flex-1 bg-slate-400 hover:bg-slate-400/90 text-white font-medium  text-sm md:w-[100px] w-full h-[40px] drop-shadow-lg semibold uppercase"
+                className="flex-1 rounded-md bg-gray-400 hover:bg-gray-400/90 text-white font-medium  text-sm md:w-[100px] w-full h-[40px] drop-shadow-lg semibold uppercase duration-150"
               >
-                cancel
+                <Link to="/">cancel</Link>
               </button>
               <button
                 type="submit"
-                className="flex-1 bg-green-400 hover:bg-green-400/90 text-white font-medium  text-sm md:w-[100px] w-full h-[40px] drop-shadow-lg semibold uppercase"
+                className="flex-1 rounded-md bg-green-400 hover:bg-green-400/90 text-white font-medium  text-sm md:w-[100px] w-full h-[40px] drop-shadow-lg semibold uppercase duration-150"
               >
                 save
               </button>

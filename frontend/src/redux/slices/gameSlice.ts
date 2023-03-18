@@ -1,8 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
-const initialState = {
-  difficulty: "",
+interface GameState {
+  difficulty: string;
+  finished: boolean;
+  status: string;
+  points: number;
+  moves: number;
+}
+
+const difficulty = localStorage.getItem("difficulty")
+  ? JSON.parse(localStorage.getItem("difficulty") || "")
+  : "normal";
+
+const initialState: GameState = {
+  difficulty,
   finished: false,
   status: "",
   points: 0,
@@ -15,6 +27,8 @@ const gameSlice = createSlice({
   reducers: {
     setGameDifficulty: (state, { payload }) => {
       state.difficulty = payload;
+
+      localStorage.setItem("difficulty", JSON.stringify(state.difficulty));
     },
     updatePoints: (state, { payload }) => {
       state.points += payload;
@@ -35,6 +49,8 @@ const gameSlice = createSlice({
       state.status = "";
       state.points = 0;
       state.moves = 0;
+
+      localStorage.clear();
     },
   },
 });

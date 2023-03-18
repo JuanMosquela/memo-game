@@ -25,11 +25,7 @@ type Card = {
   index: number;
 };
 
-type BoardProps = {
-  playMode: string;
-};
-
-const Board = ({ playMode }: BoardProps) => {
+const Board = () => {
   const [cards, setCards] = useState<any>(
     [
       {
@@ -116,7 +112,7 @@ const Board = ({ playMode }: BoardProps) => {
     ].sort(() => (Math.random() > 0.5 ? 1 : -1))
   );
   const [openCards, setOpenCards] = useState<Array<number>>([]);
-  // const [points, setPoints] = useState(0);
+
   const [clearedCards, setClearedCards] = useState<Array<number>>([]);
   const [shouldDisableAllCards, setShouldDisableAllCards] =
     useState<boolean>(false);
@@ -152,9 +148,7 @@ const Board = ({ playMode }: BoardProps) => {
     enable();
 
     if (cards[first].id === cards[second].id) {
-      // setPoints((prev) => prev + 1);
-      dispatch(updatePoints(2));
-
+      dispatch(updatePoints(20));
       setClearedCards((prev) => [...prev, first, second]);
       setOpenCards([]);
       return;
@@ -168,7 +162,6 @@ const Board = ({ playMode }: BoardProps) => {
   const handleCardClick = (id: number) => {
     if (openCards.length === 1) {
       setOpenCards((prev) => [...prev, id]);
-
       disable();
     } else {
       clearTimeout(timeout.current);
@@ -216,11 +209,11 @@ const Board = ({ playMode }: BoardProps) => {
             ))}
           </section>
           <div className=" flex w-full  justify-end gap-4">
-            <Points />
+            <Points bgColor={true} />
             <Temporizador />
           </div>
         </div>
-        {/* <ModalComponent /> */}
+        <ModalComponent />
       </div>
     </>
   );

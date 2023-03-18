@@ -9,14 +9,13 @@ import {
 import ModalComponent from "./ModalComponent";
 
 const Temporizador = ({}) => {
-  const { difficulty, finished, status } = useSelector(selectGame);
+  const { difficulty, status } = useSelector(selectGame);
+
   const dispatch = useDispatch();
-  let [timerClock, setTimerClock] = useState(difficulty == "normal" ? 50 : 5);
+  let [timerClock, setTimerClock] = useState(difficulty == "normal" ? 40 : 5);
 
   useEffect(() => {
     let timeout = setInterval(() => {
-      console.log(status);
-
       if (status == "completed") {
         clearInterval(timeout);
         return;
@@ -44,7 +43,7 @@ const Temporizador = ({}) => {
         {timerClock}
       </span>
 
-      {/* <ModalComponent /> */}
+      <ModalComponent />
     </>
   );
 };
