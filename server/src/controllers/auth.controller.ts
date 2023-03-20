@@ -63,7 +63,7 @@ const login = async (req: Request, res: Response) => {
       return res.status(401).json({ msg: "Invalid email or password" });
     }
 
-    const token = await generateToken(user.id);
+    const token = await generateToken(user.rows[0].id);
 
     res.status(200).json({
       msg: "user login succesfully",

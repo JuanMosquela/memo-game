@@ -1,14 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import RequestUserId from "../types/types";
 
 interface IPayload extends Request {
-  _id: string;
+  id: string;
   iat: number;
   exp: number;
-}
-
-interface RequestUserId extends Request {
-  userId: string;
 }
 
 const verifyToken = (req: RequestUserId, res: Response, next: NextFunction) => {
@@ -22,7 +19,9 @@ const verifyToken = (req: RequestUserId, res: Response, next: NextFunction) => {
     token,
     `${process.env.JWT_SECRET_KEY}`
   ) as IPayload;
-  req.userId = payload._id;
+
+  req.userId = payload.id;
+
   next();
 };
 
