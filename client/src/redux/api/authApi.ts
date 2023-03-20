@@ -1,4 +1,3 @@
-import { url } from "inspector";
 import { emptyApi } from "./emptyApi";
 
 export const extendedAuthApi = emptyApi.injectEndpoints({
