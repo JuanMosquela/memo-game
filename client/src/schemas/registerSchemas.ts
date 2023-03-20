@@ -1,7 +1,7 @@
 import * as yup from "yup";
 
 export const registerSchemas = yup.object().shape({
-  name: yup
+  username: yup
     .string()
     .min(2, "Name too short")
     .max(50, "Name too long")

@@ -1,48 +1,39 @@
 import { useFormik } from "formik";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-
 import { registerSchemas } from "../schemas/registerSchemas";
-
 import { useDispatch, useSelector } from "react-redux";
-// import { signUpUser } from "../redux/slices/authSliceRedux";
 import { CircularProgress } from "@mui/material";
-import {
-  AiFillEye,
-  AiFillEyeInvisible,
-  AiOutlineEye,
-  AiOutlineEyeInvisible,
-} from "react-icons/ai";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import logo from "../assets/logo.svg";
-
-// import { toast } from "react-toastify";
-// import { useSignUpMutation } from "../redux/api/productsApi";
+import { useSingUpMutation } from "../redux/api/authApi";
+import { selectAuth } from "../redux/slices/authSlice";
 
 const Register = () => {
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  //   const auth = useSelector((state) => state.auth);
+  const auth = useSelector(selectAuth);
   const from = location.state?.from?.pathname || "/";
 
-  //   const [signUp, { data, error, isLoading }] = useSignUpMutation();
+  const [signUp, { data, error, isLoading }] = useSingUpMutation();
 
-  //   useEffect(() => {
-  //     console.log(error);
-  //     if (data?.user) {
-  //       navigate("/login");
-  //     }
+  useEffect(() => {
+    console.log(error);
+    if (data?.user) {
+      navigate("/login");
+    }
 
-  //     // if (error?.status === 401) {
-  //     //   toast.error(error?.data?.msg);
-  //     // }
-  //   }, [data, error]);
+    // if (error?.status === 401) {
+    //   toast.error(error?.data?.msg);
+    // }
+  }, [data, error]);
 
   const onSubmit = async () => {
     console.log(values);
     try {
-      //   await signUp(values);
+      await signUp(values);
     } catch (error) {
       console.log(error);
       //   toast.error(`${error}`, { position: "top-right" });
@@ -62,7 +53,7 @@ const Register = () => {
     touched,
   } = useFormik({
     initialValues: {
-      name: "",
+      username: "",
       email: "",
       password: "",
     },
@@ -88,23 +79,23 @@ const Register = () => {
         </h2>
         <div className="relative mb-4 min-h-[60px]">
           <input
-            className="w-full py-1 text-md outline-none bg-dark rounded-md p-2 border-2 border-letter border-b-2 "
+            className="w-full py-1 text-md outline-none bg-dark text-letter rounded-md p-2 border-2 border-letter border-b-2 "
             onChange={handleChange}
             onBlur={handleBlur}
-            value={values.name}
+            value={values.username}
             type="text"
-            name="name"
+            name="username"
             placeholder="UserName"
           />
-          {errors.name && touched.name && (
+          {errors.username && touched.username && (
             <p className="pt-2 text-letter text-sm font-semibold">
-              {errors.name}
+              {errors.username}
             </p>
           )}
         </div>
         <div className="relative mb-4 min-h-[60px]">
           <input
-            className="w-full py-1 text-md outline-none bg-dark rounded-md p-2 border-2 border-letter border-b-2  "
+            className="w-full py-1 text-md outline-none bg-dark  text-letter rounded-md p-2 border-2 border-letter border-b-2  "
             onChange={handleChange}
             onBlur={handleBlur}
             value={values.email}
@@ -120,7 +111,7 @@ const Register = () => {
         </div>
         <div className="relative mb-4 min-h-[60px]">
           <input
-            className="w-full py-1 text-md outline-none bg-dark rounded-md p-2 border-2 border-letter border-b-2 "
+            className="w-full py-1 text-md outline-none bg-dark  text-letter rounded-md p-2 border-2 border-letter border-b-2 "
             onChange={handleChange}
             onBlur={handleBlur}
             value={values.password}
@@ -130,12 +121,12 @@ const Register = () => {
           />
           {visible ? (
             <AiFillEyeInvisible
-              className="absolute right-[15px] top-0 text-2xl"
+              className="absolute right-[15px] top-[10%] text-xl text-letter"
               onClick={() => setVisible(!visible)}
             />
           ) : (
             <AiFillEye
-              className="absolute right-[15px] top-0 text-2xl"
+              className="absolute right-[15px] top-[10%] text-xl text-letter"
               onClick={() => setVisible(!visible)}
             />
           )}
@@ -147,10 +138,10 @@ const Register = () => {
         </div>
         <button
           type="submit"
-          disabled={isSubmitting}
+          disabled={isLoading}
           className="bloc flex items-center justify-center w-full h-12 bg-green hover:bg-greenhover text-white hover:text-dark duration-150 rounded-md py-2 font-bold  "
         >
-          {false ? (
+          {isLoading ? (
             <CircularProgress
               size="1.5rem"
               sx={{ color: "rgba(255,255,255)" }}

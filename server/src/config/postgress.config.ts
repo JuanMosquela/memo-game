@@ -13,7 +13,6 @@ pool.connect((err) => {
   if (err) {
     return console.log(err);
   }
-
   console.log("database succesfully connected");
 });
 

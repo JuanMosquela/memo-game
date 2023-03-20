@@ -10,9 +10,8 @@ import { useFormik } from "formik";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { loginSchemas } from "../schemas/loginSchemas";
 import logo from "../assets/logo.svg";
-
-// import { useSignInMutation } from "../redux/api/productsApi";
-// import { toast } from "react-toastify";
+import { useSingInMutation } from "../redux/api/authApi";
+import { selectAuth, setCredentials } from "../redux/slices/authSlice";
 
 const Login = () => {
   const [visible, setVisible] = useState(false);
@@ -21,33 +20,43 @@ const Login = () => {
 
   const from = location.state?.from?.pathname || "/";
 
-  // const auth = useSelector((state) => state.auth);
+  const auth = useSelector(selectAuth);
 
   const dispatch = useDispatch();
 
-  // const [signIn, { data, isLoading, error }] = useSignInMutation();
+  const [signIn, { data, isLoading, error, isSuccess }] = useSingInMutation();
 
-  // useEffect(() => {
-  //   if (auth?.token) navigate(from);
-  // }, [data, error]);
-
-  // useEffect(() => {
-  //   if (auth?.token) navigate(from);
-  // }, [auth]);
+  console.log(data, error);
 
   const onSubmit = async () => {
     try {
-      // await signIn(values);
+      await signIn(values);
       console.log(values);
     } catch (error) {
       console.log(error);
     }
   };
 
+  useEffect(() => {
+    if (data?.token) {
+      dispatch(setCredentials(data));
+    }
+    // if (error) {
+    //   toast.error(error?.data?.error);
+    // }
+
+    if (auth?.token) navigate(from);
+  }, [isSuccess, error]);
+
+  useEffect(() => {
+    console.log(auth);
+    if (auth.token) navigate(from);
+  }, [auth]);
+
   const { values, handleChange, handleSubmit, handleBlur, errors, touched } =
     useFormik({
       initialValues: {
-        email: "",
+        usernameOrEmail: "",
         password: "",
       },
       validationSchema: loginSchemas,
@@ -74,20 +83,20 @@ const Login = () => {
               className="w-full py-1 text-md outline-none border-2 border-letter bg-dark text-letter rounded-md p-2  "
               onChange={handleChange}
               onBlur={handleBlur}
-              value={values.email}
+              value={values.usernameOrEmail}
               type="text"
-              name="email"
-              placeholder="Email Adress"
+              name="usernameOrEmail"
+              placeholder="Username or Email"
             />
-            {errors.email && touched.email && (
+            {errors.usernameOrEmail && touched.usernameOrEmail && (
               <p className="pt-2 text-letter text-sm font-semibold">
-                {errors.email}
+                {errors.usernameOrEmail}
               </p>
             )}
           </div>
-          <div className="relative mb-4 min-h-[60px]">
+          <div className=" relative mb-4 min-h-[60px]">
             <input
-              className="w-full py-1 text-md outline-none border-2 border-letter bg-dark text-letter rounded-md p-2  "
+              className=" w-full py-1 text-md outline-none border-2 border-letter bg-dark text-letter rounded-md p-2  "
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.password}
@@ -97,12 +106,12 @@ const Login = () => {
             />
             {visible ? (
               <AiFillEyeInvisible
-                className="absolute right-[15px] top-0 text-2xl"
+                className="absolute right-[15px] top-[10%] text-xl text-letter "
                 onClick={() => setVisible(!visible)}
               />
             ) : (
               <AiFillEye
-                className="absolute right-[15px] top-0 text-2xl"
+                className="absolute right-[15px] top-[10%] text-xl text-letter"
                 onClick={() => setVisible(!visible)}
               />
             )}
@@ -114,10 +123,10 @@ const Login = () => {
           </div>
           <button
             type="submit"
-            disabled={false}
+            disabled={isLoading}
             className="bloc flex items-center justify-center w-full h-12 bg-green hover:bg-greenhover duration-150 text-white hover:text-dark rounded-md py-2 font-bold  "
           >
-            {false ? (
+            {isLoading ? (
               <>
                 <CircularProgress
                   sx={{ color: "rgba(255,255,255,.8)" }}

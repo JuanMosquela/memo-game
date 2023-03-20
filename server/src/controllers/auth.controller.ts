@@ -2,21 +2,22 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import pool from "../config/postgress.config";
 import generateToken from "../helpers/generate-token";
+import { v4 as uuid_v4 } from "uuid";
+import { QueryResult } from "pg";
 
 const register = async (req: Request, res: Response) => {
   try {
-    const { first_name, last_name, email, password } = req.body;
-    console.log(first_name);
+    const { username, email, password } = req.body;
 
     const salt = bcrypt.genSaltSync(10);
     const hashed_password = bcrypt.hashSync(password, salt);
 
     try {
       const user = await pool.query(
-        "INSERT INTO users (first_name, last_name, email, hashed_password) VALUES($1, $2, $3, $4)",
-        [first_name, last_name, email, hashed_password]
+        "INSERT INTO users (username, email, hashed_password, id) VALUES($1, $2, $3 ,$4 )",
+        [username, email, hashed_password, uuid_v4()]
       );
-      console.log(user);
+
       res.status(200).json({
         msg: "User registered succesfully",
         user,
@@ -31,13 +32,21 @@ const register = async (req: Request, res: Response) => {
   }
 };
 
+type UserModel = {
+  username: string;
+  email: string;
+  hashed_password: string;
+  id: string;
+};
+
 const login = async (req: Request, res: Response) => {
   try {
-    const { email, password } = req.body;
+    const { usernameOrEmail, password } = req.body;
 
-    const user: any = await pool.query("SELECT * FROM users WHERE email = $1", [
-      email,
-    ]);
+    const user: any = await pool.query(
+      "SELECT * FROM users WHERE email = $1 OR username = $1",
+      [usernameOrEmail]
+    );
 
     if (user.rowCount === 0) {
       return res.status(404).send({ error: "User not found" });
@@ -50,18 +59,15 @@ const login = async (req: Request, res: Response) => {
       user.rows[0].hashed_password
     );
 
-    console.log(check_password);
-
     if (!check_password) {
       return res.status(401).json({ msg: "Invalid email or password" });
     }
 
-    const token = generateToken(user.id);
+    const token = await generateToken(user.id);
 
     res.status(200).json({
       msg: "user login succesfully",
-
-      user: user.rows[0].first_name,
+      user: user.rows[0].username,
       email: user.rows[0].email,
       token,
     });

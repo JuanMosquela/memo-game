@@ -19,8 +19,8 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <Provider store={store}>
       <Routes>
         <Route path="/" element={<App />}>
+          <Route index element={<Home />} />
           <Route element={<ProtectedRoute />}>
-            <Route index element={<Home />} />
             <Route path="/game" element={<Game />} />
             <Route path="/ranking" element={<LeaderBoard />} />
           </Route>
