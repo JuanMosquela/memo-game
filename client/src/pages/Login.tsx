@@ -31,7 +31,6 @@ const Login = () => {
   const onSubmit = async () => {
     try {
       await signIn(values);
-      console.log(values);
     } catch (error) {
       console.log(error);
     }

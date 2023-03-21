@@ -9,11 +9,37 @@ const saveGame = async (req: RequestUserId, res: Response) => {
 
     const { points, total_moves } = req.body;
 
-    const game_saved = await pool.query(
-      "INSERT INTO stats (points, total_moves, stats_id) VALUES ($1, $2, $3)",
-      [points, total_moves, id]
+    const game_stats = await pool.query(
+      "SELECT * FROM stats WHERE stats_id = $1",
+      [id]
     );
-    res.status(200).json({ msg: "progress saved succesfully", game_saved });
+
+    console.log(game_stats);
+
+    let game_saved;
+
+    if (game_stats.rows.length == 0) {
+      try {
+        game_saved = await pool.query(
+          "INSERT INTO stats (points, total_moves, stats_id) VALUES ($1, $2, $3)",
+          [points, total_moves, id]
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        game_saved = await pool.query(
+          "UPDATE stats SET points = points + $1, total_moves = $2 WHERE stats_id = $3 ",
+          [points, total_moves, id]
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    if (game_saved)
+      res.status(200).json({ msg: "progress saved succesfully", game_saved });
   } catch (error) {
     res.status(400).send(error);
   }

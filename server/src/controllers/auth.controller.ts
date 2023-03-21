@@ -65,6 +65,8 @@ const login = async (req: Request, res: Response) => {
 
     const token = await generateToken(user.rows[0].id);
 
+    console.log(user.rows[0]);
+
     res.status(200).json({
       msg: "user login succesfully",
       user: user.rows[0].username,

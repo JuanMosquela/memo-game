@@ -1,8 +1,12 @@
-import { CgProfile } from "react-icons/cg";
-import { Link } from "react-router-dom";
 import logo from "../assets/logo.svg";
+import { useGetAllPlayerStatsQuery } from "../redux/api/gameApi";
+import { PlayerStats } from "../types/types";
 
 const LeaderBoard = () => {
+  const { data, error } = useGetAllPlayerStatsQuery();
+
+  console.log(data);
+
   return (
     <section className=" flex justify-center items-center min-h-screen  ">
       <div className="w-[600px] p-5  bg-dark rounded-md ">
@@ -29,18 +33,20 @@ const LeaderBoard = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-green ">
-              <tr className="bg-letter">
-                <td className="p-3 text-sm text-dark font-semibold whitespace-nowrap">
-                  JuanmaMosquella
-                </td>
+              {data?.map((player: PlayerStats) => (
+                <tr key={player.id} className="bg-letter">
+                  <td className="p-3 text-sm text-dark font-semibold whitespace-nowrap">
+                    {player.username}
+                  </td>
 
-                <td className="p-3 text-sm font-semibold whitespace-nowrap">
-                  16
-                </td>
-                <td className="p-3 text-sm font-semibold whitespace-nowrap">
-                  160
-                </td>
-              </tr>
+                  <td className="p-3 text-sm font-semibold whitespace-nowrap">
+                    {player.total_moves}
+                  </td>
+                  <td className="p-3 text-sm font-semibold whitespace-nowrap">
+                    {player.points}
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

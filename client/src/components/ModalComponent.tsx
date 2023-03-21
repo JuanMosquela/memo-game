@@ -17,6 +17,7 @@ import success from "../assets/success.png";
 import Points from "./Points";
 import { Link } from "react-router-dom";
 import { FiUsers } from "react-icons/fi";
+import { useSaveGameMutation } from "../redux/api/gameApi";
 //   import { useNavigate, useParams } from "react-router-dom";
 //   import { toast } from "react-toastify";
 //   import { selectAuth } from "../redux/slices/authSlice";
@@ -36,6 +37,10 @@ const ModalComponent = () => {
   // const navigate = useNavigate();
 
   // const [createTodo, { data, isLoading, error }] = useCreateTodoMutation();
+
+  const [saveGame, { data, error, isLoading }] = useSaveGameMutation();
+
+  console.log(data);
 
   const style = {
     position: "absolute",
@@ -60,19 +65,23 @@ const ModalComponent = () => {
   //     setOpen(false);
   //   };
 
-  // const handleSubmit = (e: any) => {
-  //   e.preventDefault();
-  //   try {
-  //     createTodo({
-  //       email: auth.email,
-  //       title,
-  //       progress: 10,
-  //       date: new Date(),
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    try {
+      // createTodo({
+      //   email: auth.email,
+      //   title,
+      //   progress: 10,
+      //   date: new Date(),
+      // });
+      saveGame({
+        points,
+        total_moves: moves,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // useEffect(() => {
   // //   if (!isLoading) {
@@ -112,7 +121,7 @@ const ModalComponent = () => {
             src={status == "timeout" ? error : success}
             alt=""
           />
-          <form className="block w-full mt-[150px]  p-6">
+          <form className="block w-full mt-[150px] p-6" onSubmit={handleSubmit}>
             <h3 className=" text-greenhover text-2xl font-semibold mb-4">
               {status == "timeout"
                 ? "Sorry, your time run out"
@@ -150,7 +159,16 @@ const ModalComponent = () => {
                 type="submit"
                 className="flex-1 rounded-md bg-green hover:bg-greenhover text-letter font-medium  text-sm md:w-[100px] w-full h-[40px] drop-shadow-lg semibold uppercase duration-150"
               >
-                save
+                {isLoading ? (
+                  <>
+                    <CircularProgress
+                      sx={{ color: "rgba(255,255,255,.8)" }}
+                      size="1.5rem"
+                    />
+                  </>
+                ) : (
+                  <span className="text-sm uppercase">Save</span>
+                )}
               </button>
             </div>
           </form>
