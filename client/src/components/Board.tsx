@@ -134,9 +134,6 @@ const Board = () => {
     if (clearedCards.length === cards.length) {
       dispatch(setGameFinished(true));
       dispatch(setGameStatus("completed"));
-      console.log(
-        `juego terminado con ${points} y necesitaste ${moves} cantidad de movidas`
-      );
     }
   };
 

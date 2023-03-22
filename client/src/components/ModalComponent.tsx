@@ -18,29 +18,19 @@ import Points from "./Points";
 import { Link } from "react-router-dom";
 import { FiUsers } from "react-icons/fi";
 import { useSaveGameMutation } from "../redux/api/gameApi";
-//   import { useNavigate, useParams } from "react-router-dom";
-//   import { toast } from "react-toastify";
-//   import { selectAuth } from "../redux/slices/authSlice";
-//   import { useSelector } from "react-redux";
-//   import { useCreateTodoMutation } from "../redux/api/todosApi";
-//   import { FiEdit } from "react-icons/fi";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ModalComponent = () => {
-  // const auth = useSelector(selectAuth);
-
   const [title, setTitle] = useState("");
 
   const { finished, status, points, moves } = useSelector(selectGame);
 
   const dispatch = useDispatch();
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  // const [createTodo, { data, isLoading, error }] = useCreateTodoMutation();
-
-  const [saveGame, { data, error, isLoading }] = useSaveGameMutation();
-
-  console.log(data);
+  const [saveGame, { data, error, isLoading, isSuccess }] =
+    useSaveGameMutation();
 
   const style = {
     position: "absolute",
@@ -52,28 +42,9 @@ const ModalComponent = () => {
     p: 4,
   };
 
-  //   const handleOpen = () => {
-  //     //   if (!auth?.token) {
-  //     //     toast.error("Debes estar autenticado");
-  //     //     navigate("/login");
-  //     //     return;
-  //     //   }
-  //     setOpen(true);
-  //   };
-
-  //   const handleClose = () => {
-  //     setOpen(false);
-  //   };
-
   const handleSubmit = (e: any) => {
     e.preventDefault();
     try {
-      // createTodo({
-      //   email: auth.email,
-      //   title,
-      //   progress: 10,
-      //   date: new Date(),
-      // });
       saveGame({
         points,
         total_moves: moves,
@@ -83,26 +54,19 @@ const ModalComponent = () => {
     }
   };
 
-  // useEffect(() => {
-  // //   if (!isLoading) {
-  // //     setOpen(false);
-  // //   }
+  useEffect(() => {
+    if (!isLoading) {
+      dispatch(setGameFinished(false));
+    }
 
-  //   //   if (reviewData && !isLoading) {
-  //   //     toast.success("Product reviewed");
-  //   //   }
-
-  //   //   if (error?.status === 501) {
-  //   //     toast.error(`${error?.data?.msg}`);
-  //   //   }
-  // }, [error, data]);
+    if (isSuccess) {
+      navigate("/ranking");
+    }
+  }, [error, data]);
 
   return (
     <>
-      <Modal
-        open={finished}
-        // onClose={() => dispatchEvent}
-      >
+      <Modal open={finished} onClose={() => dispatchEvent}>
         <Box
           sx={{
             position: "absolute",
@@ -118,7 +82,7 @@ const ModalComponent = () => {
         >
           <img
             className=" absolute top-[-40px] left-0 right-0 w-[200px] h-[200px] object-contain shadow-md rounded-full block m-auto    "
-            src={status == "timeout" ? error : success}
+            src={`${status == "timeout" ? error : success}`}
             alt=""
           />
           <form className="block w-full mt-[150px] p-6" onSubmit={handleSubmit}>

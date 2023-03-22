@@ -12,9 +12,9 @@ const Home = () => {
   const handleClick = (value: string) => {
     dispatch(setGameDifficulty(value));
   };
-  useEffect(() => {
-    dispatch(resetGame());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(resetGame());
+  // }, []);
 
   return (
     <section className="min-h-screen flex justify-center items-center">
@@ -36,28 +36,30 @@ const Home = () => {
             </p>
           </div>
 
-          <button
-            className="block w-full bg-green hover:bg-greenhover duration-200 py-3 rounded-md "
-            onClick={() => handleClick("normal")}
-          >
+          <div className="flex flex-col gap-2">
+            <Link
+              className="  text-letter font-semibold text-center text-md "
+              to="/game"
+            >
+              <button
+                className="block w-full bg-green hover:bg-greenhover hover:text-dark duration-200 py-3 rounded-md "
+                onClick={() => handleClick("normal")}
+              >
+                Normal
+              </button>
+            </Link>
             <Link
               className="  text-letter font-semibold text-center text-md"
-              to="game"
+              to="/game"
             >
-              Normal
+              <button
+                className="block w-full bg-green hover:bg-greenhover hover:text-dark duration-200 py-3 rounded-md "
+                onClick={() => handleClick("hard")}
+              >
+                Hard
+              </button>
             </Link>
-          </button>
-          <button
-            className="block w-full bg-green hover:bg-greenhover duration-200 py-3 rounded-md "
-            onClick={() => handleClick("hard")}
-          >
-            <Link
-              className=" text-letter font-semibold text-center text-md"
-              to="game"
-            >
-              Hard
-            </Link>
-          </button>
+          </div>
         </div>
       </div>
     </section>

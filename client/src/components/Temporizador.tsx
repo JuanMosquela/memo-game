@@ -12,7 +12,12 @@ const Temporizador = ({}) => {
   const { difficulty, status } = useSelector(selectGame);
 
   const dispatch = useDispatch();
-  let [timerClock, setTimerClock] = useState(difficulty == "normal" ? 40 : 5);
+
+  let [timerClock, setTimerClock] = useState(difficulty == "normal" ? 40 : 30);
+
+  useEffect(() => {
+    dispatch(setGameStatus(""));
+  }, []);
 
   useEffect(() => {
     let timeout = setInterval(() => {

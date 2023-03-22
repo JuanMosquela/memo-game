@@ -11,6 +11,7 @@ import { selectAuth } from "../redux/slices/authSlice";
 
 const Register = () => {
   const [visible, setVisible] = useState(false);
+  const [file, setFile] = useState("");
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
@@ -31,9 +32,21 @@ const Register = () => {
   }, [data, error]);
 
   const onSubmit = async () => {
-    console.log(values);
     try {
-      await signUp(values);
+      const formData = new FormData();
+
+      console.log(values);
+
+      for (const value of Object.entries(values)) {
+        console.log(value[0], value[1]);
+        formData.append(value[0], value[1]);
+      }
+
+      if (file) {
+        formData.append("file", file);
+      }
+
+      await signUp(formData);
     } catch (error) {
       console.log(error);
       //   toast.error(`${error}`, { position: "top-right" });
@@ -61,6 +74,11 @@ const Register = () => {
     onSubmit,
   });
 
+  const handleFile = (e: any) => {
+    const file = e.target.files[0];
+    setFile(file);
+  };
+
   return (
     <div className="flex flex-col justify-center items-center min-h-[100vh]   bg-gray">
       <form
@@ -78,6 +96,7 @@ const Register = () => {
           Create an account
         </h2>
         <div className="relative mb-4 min-h-[60px]">
+          <input type="file" onChange={handleFile} />
           <input
             className="w-full py-1 text-md outline-none bg-dark text-letter rounded-md p-2 border-2 border-letter border-b-2 "
             onChange={handleChange}
