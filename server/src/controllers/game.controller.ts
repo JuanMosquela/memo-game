@@ -5,7 +5,6 @@ import RequestUserId from "../types/types";
 const saveGame = async (req: RequestUserId, res: Response) => {
   try {
     const id = req.userId;
-    console.log(id);
 
     const { points, total_moves } = req.body;
 
@@ -13,8 +12,6 @@ const saveGame = async (req: RequestUserId, res: Response) => {
       "SELECT * FROM stats WHERE stats_id = $1",
       [id]
     );
-
-    console.log(game_stats);
 
     let game_saved;
 

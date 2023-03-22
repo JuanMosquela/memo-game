@@ -3,19 +3,34 @@ import bcrypt from "bcrypt";
 import pool from "../config/postgress.config";
 import generateToken from "../helpers/generate-token";
 import { v4 as uuid_v4 } from "uuid";
-import { QueryResult } from "pg";
+import cloudinary from "../config/clodinary.config";
 
 const register = async (req: Request, res: Response) => {
   try {
     const { username, email, password } = req.body;
+
+    let uploaded_file: any;
+
+    if (req?.files?.file) {
+      const { tempFilePath }: any = req.files.file;
+      uploaded_file = await cloudinary.uploader.upload(tempFilePath, {
+        folder: "memo_game/users",
+      });
+    }
 
     const salt = bcrypt.genSaltSync(10);
     const hashed_password = bcrypt.hashSync(password, salt);
 
     try {
       const user = await pool.query(
-        "INSERT INTO users (username, email, hashed_password, id) VALUES($1, $2, $3 ,$4 )",
-        [username, email, hashed_password, uuid_v4()]
+        "INSERT INTO users (username, picture,  email, hashed_password, id) VALUES($1, $2, $3 ,$4, $5 )",
+        [
+          username,
+          uploaded_file && uploaded_file.secure_url,
+          email,
+          hashed_password,
+          uuid_v4(),
+        ]
       );
 
       res.status(200).json({
@@ -24,7 +39,7 @@ const register = async (req: Request, res: Response) => {
       });
     } catch (error) {
       console.log(error);
-      return res.status(400).send({ msg: "algo malo paso" });
+      return res.status(400).send(error);
     }
   } catch (error) {
     console.log(error);
@@ -67,10 +82,13 @@ const login = async (req: Request, res: Response) => {
 
     console.log(user.rows[0]);
 
+    const { hashed_password, ...rest } = user.rows;
+
     res.status(200).json({
       msg: "user login succesfully",
       user: user.rows[0].username,
       email: user.rows[0].email,
+      picture: user.rows[0].picture,
       token,
     });
   } catch (error) {
